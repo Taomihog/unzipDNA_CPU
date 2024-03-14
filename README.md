@@ -28,11 +28,9 @@ Run "plot.py" to plot the test sequence's result.
 
 ## Goal of this program  
 
-My goal is to make the unzipping curve calculation fast (so I can calculate the unzipping curves of thousands of genes in an acceptable time). However, there is no better method other than brute-force partition function calculation for now. The only thing I can do is to make each loop faster. I decided to calculate something ahead of time and save it in the program as constexpr variables.
-
-It took some thinking to move majority of the calculation from run-time to compile time. After several attempts, I **"constexpred"** most of the calculation overhead. Two look-up tables (LUTs) are created to hold these data. These LUTs are saved in **constexpr std::arrays** so I have to use c++20 (or above). The drawback is that the compile time is very long, thousands of times longer than a straightforward c++ program.  
+My goal is to make the unzipping curve calculation very fast in order to calculate the unzipping curves of the whole transcriptome in a reasonable time. There is no better method other than brute-force partition function calculation for now, but I can still move some of the heavy-duty, repetative computation to a lookup table (If the LUT is dense enough, the error is acceptable). Thank to the support of `constexpr` to `std::array` in C++ (C++20 or above), I'm able to calculate and store the lookup table.
   
-On Aug/15/2023, I implemented multithreading. The execution speed increased by another factor of 10-20.  
+On Aug/15/2023, I implemented multi-threading. The execution speed increased by another factor of 10-20.  
 
 ## DNA unzipping theory  
 
